@@ -21,10 +21,10 @@
                        BackgroundColor="#0F3460" Keyboard="Numeric"/>
 
                 <Label Text="Kategori:" TextColor="#8D8DAA" FontSize="13" Margin="0,0,0,-5"/>
-                <Picker x:Name="KategoriPicker" Title="Kategori seçin..." 
-                        TextColor="White" TitleColor="#533483" FontSize="16"
-                        BackgroundColor="#0F3460"
-                        ItemDisplayBinding="{Binding KAdi}"/>
+                <Button x:Name="KategoriSecButon" Text="Kategori seçin..."
+                        BackgroundColor="#0F3460" TextColor="#533483" FontSize="16"
+                        HorizontalOptions="Fill" HeightRequest="44"
+                        Clicked="OnKategoriSecClicked"/>
 
                 <Grid ColumnDefinitions="*, *, Auto" ColumnSpacing="10">
                     <Button x:Name="KaydetButon" Grid.Column="0" Text="💾 Kaydet" 

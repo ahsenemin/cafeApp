@@ -8,6 +8,8 @@ namespace CafeApp.UI
         private UrunYonetimi _urunYonetimi = new UrunYonetimi();
         private KategoriYonetimi _kategoriYonetimi = new KategoriYonetimi();
         private Urun? _duzenlenecekUrun = null;
+        private List<Kategori> _yukluKategoriler = new List<Kategori>();
+        private Kategori? _secilenKategori = null;
 
         public UrunYonetimPage()
         {
@@ -24,9 +26,37 @@ namespace CafeApp.UI
         // ==============================================================================
         // KATEGORİLERİ PİCKER'A DOLDUR
         // ==============================================================================
-        private void KategorileriPickeraDoldur()
+        private async void KategorileriPickeraDoldur()
         {
-            KategoriPicker.ItemsSource = _kategoriYonetimi.TumKategorileriGetir();
+            try
+            {
+                _yukluKategoriler = _kategoriYonetimi.TumKategorileriGetir();
+
+                if (_yukluKategoriler.Count == 0)
+                    await DisplayAlert("Uyarı", "Veritabanında hiç kategori bulunamadı.", "Tamam");
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Bağlantı Hatası", $"Kategoriler yüklenemedi:\n{ex.Message}", "Tamam");
+            }
+        }
+
+        private async void OnKategoriSecClicked(object sender, EventArgs e)
+        {
+            if (_yukluKategoriler.Count == 0)
+            {
+                await DisplayAlert("Uyarı", "Kategori bulunamadı.", "Tamam");
+                return;
+            }
+
+            var secenekler = _yukluKategoriler.Select(k => k.KAdi ?? "").ToArray();
+            string? secilen = await DisplayActionSheet("Kategori Seçin", "İptal", null, secenekler);
+
+            if (secilen == null || secilen == "İptal") return;
+
+            _secilenKategori = _yukluKategoriler.FirstOrDefault(k => k.KAdi == secilen);
+            KategoriSecButon.Text = secilen;
+            KategoriSecButon.TextColor = Colors.White;
         }
 
         // ==============================================================================
@@ -57,13 +87,13 @@ namespace CafeApp.UI
                 return;
             }
 
-            if (KategoriPicker.SelectedItem == null)
+            if (_secilenKategori == null)
             {
                 await DisplayAlert("Uyarı", "Lütfen bir kategori seçin!", "Tamam");
                 return;
             }
 
-            var secilenKategori = (Kategori)KategoriPicker.SelectedItem;
+            var secilenKategori = _secilenKategori;
             string mesaj;
 
             if (_duzenlenecekUrun != null)
@@ -101,16 +131,10 @@ namespace CafeApp.UI
             UrunAdiEntry.Text = urun.UrunAdi;
             UrunFiyatEntry.Text = urun.UrunFiyati.ToString("F2");
 
-            // Picker'da doğru kategoriyi seç
-            var kategoriler = KategoriPicker.ItemsSource as List<Kategori>;
-            if (kategoriler != null)
-            {
-                var kategori = kategoriler.FirstOrDefault(k => k.KategoriId == urun.KategoriId);
-                if (kategori != null)
-                {
-                    KategoriPicker.SelectedItem = kategori;
-                }
-            }
+            // Kategori butonunu güncelle
+            _secilenKategori = _yukluKategoriler.FirstOrDefault(k => k.KategoriId == urun.KategoriId);
+            KategoriSecButon.Text = _secilenKategori?.KAdi ?? "Kategori seçin...";
+            KategoriSecButon.TextColor = _secilenKategori != null ? Colors.White : Color.FromArgb("#533483");
 
             FormBaslikLabel.Text = $"✏️ \"{urun.UrunAdi}\" Düzenleniyor";
             KaydetButon.Text = "💾 Güncelle";
@@ -160,7 +184,9 @@ namespace CafeApp.UI
             _duzenlenecekUrun = null;
             UrunAdiEntry.Text = "";
             UrunFiyatEntry.Text = "";
-            KategoriPicker.SelectedItem = null;
+            _secilenKategori = null;
+            KategoriSecButon.Text = "Kategori seçin...";
+            KategoriSecButon.TextColor = Color.FromArgb("#533483");
             FormBaslikLabel.Text = "Yeni Ürün Ekle";
             KaydetButon.Text = "💾 Kaydet";
             IptalButon.IsVisible = false;
