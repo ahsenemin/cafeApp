@@ -14,10 +14,23 @@
         <ToolbarItem Text="Çıkış" Clicked="OnCikisClicked"/>
     </ContentPage.ToolbarItems>
 
-    <Grid RowDefinitions="Auto, *" Padding="15">
-        
+    <Grid RowDefinitions="Auto, Auto, *" Padding="15">
+
+        <!-- Bildirim Bandı -->
+        <Frame x:Name="BildirimFrame" Grid.Row="0"
+               BackgroundColor="#E94560" CornerRadius="10" Padding="12,8"
+               Margin="0,0,0,8" BorderColor="Transparent"
+               IsVisible="False">
+            <Frame.GestureRecognizers>
+                <TapGestureRecognizer Tapped="OnBildirimTapped"/>
+            </Frame.GestureRecognizers>
+            <Label x:Name="BildirimLabel"
+                   TextColor="White" FontSize="15" FontAttributes="Bold"
+                   HorizontalOptions="Center"/>
+        </Frame>
+
         <!-- Üst Bilgi Bandı -->
-        <Frame Grid.Row="0" BackgroundColor="#16213E" CornerRadius="12" Padding="15" Margin="0,0,0,10" BorderColor="Transparent">
+        <Frame Grid.Row="1" BackgroundColor="#16213E" CornerRadius="12" Padding="15" Margin="0,0,0,10" BorderColor="Transparent">
             <Grid ColumnDefinitions="*, Auto">
                 <VerticalStackLayout Grid.Column="0">
                     <Label x:Name="HosgeldinLabel" FontSize="14" TextColor="#8D8DAA"/>
@@ -30,7 +43,7 @@
         </Frame>
 
         <!-- Masa Grid'i -->
-        <CollectionView x:Name="MasalarListesi" Grid.Row="1">
+        <CollectionView x:Name="MasalarListesi" Grid.Row="2">
             <CollectionView.ItemsLayout>
                 <GridItemsLayout Orientation="Vertical"
                         Span="3"

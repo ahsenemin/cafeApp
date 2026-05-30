@@ -262,11 +262,15 @@ namespace CafeApp.DAL
         public DataTable OdemeListele() => GetDataTable("sp_OdemeListele");
         #endregion
 
-        #region 9. RAPORLAMA İŞLEMLERİ
-        // Günlük satış raporu
-        public DataTable GunlukSatisRaporu() => GetDataTable("sp_GunlukSatisRaporu");
+        #region 9. BİLDİRİM İŞLEMLERİ
+        public DataTable HazirBekleyenler() => GetDataTable("sp_HazirBekleyenler");
 
-        // Personel bazlı satış raporu
+        public bool GarsonGorduIsaretle(int siparisDetayId) =>
+            ExecuteProcedure("sp_GarsonGorduIsaretle", new MySqlParameter("p_siparis_detay_id", siparisDetayId));
+        #endregion
+
+        #region 10. RAPORLAMA İŞLEMLERİ
+        public DataTable GunlukSatisRaporu() => GetDataTable("sp_GunlukSatisRaporu");
         public DataTable PersonelSatisRaporu() => GetDataTable("sp_PersonelSatisRaporu");
         #endregion
     }

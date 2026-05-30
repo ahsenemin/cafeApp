@@ -5,8 +5,9 @@ namespace CafeApp.UI
 {
     public partial class GarsonPage : ContentPage
     {
-        // İş katmanımızı (BL) çağırıyoruz
         private MasaYonetimi _masaYonetimi = new MasaYonetimi();
+        private BildirimYonetimi _bildirimYonetimi = new BildirimYonetimi();
+        private IDispatcherTimer? _timer;
 
         public GarsonPage()
         {
@@ -14,19 +15,72 @@ namespace CafeApp.UI
             HosgeldinLabel.Text = $"Hoş geldin, {App.AktifPersonelAdi}";
         }
 
-        // ==============================================================================
-        // SAYFA HER GÖRÜNDÜĞÜNDe MASALARI YENİDEN YÜKLE
-        // (Sipariş sonrası geri dönüldüğünde veri güncellensin)
-        // ==============================================================================
         protected override void OnAppearing()
         {
             base.OnAppearing();
             MasalariEkranaYukle();
+            TimerBaslat();
+        }
+
+        protected override void OnDisappearing()
+        {
+            base.OnDisappearing();
+            _timer?.Stop();
+        }
+
+        private void TimerBaslat()
+        {
+            _timer?.Stop();
+            _timer = Application.Current!.Dispatcher.CreateTimer();
+            _timer.Interval = TimeSpan.FromSeconds(10);
+            _timer.Tick += (s, e) => BildirimleriKontrolEt();
+            _timer.Start();
+        }
+
+        private void BildirimleriKontrolEt()
+        {
+            try
+            {
+                var hazirlar = _bildirimYonetimi.HazirBekleyenleriGetir();
+
+                MainThread.BeginInvokeOnMainThread(() =>
+                {
+                    if (hazirlar.Count > 0)
+                    {
+                        BildirimLabel.Text = $"🔔 {hazirlar.Count} ürün hazır! Tıkla →";
+                        BildirimFrame.IsVisible = true;
+                        MasalariEkranaYukle();
+                    }
+                    else
+                    {
+                        BildirimFrame.IsVisible = false;
+                    }
+                });
+            }
+            catch { }
+        }
+
+        private async void OnBildirimTapped(object sender, TappedEventArgs e)
+        {
+            var hazirlar = _bildirimYonetimi.HazirBekleyenleriGetir();
+            if (hazirlar.Count == 0) return;
+
+            // Tüm hazır ürünleri listele
+            string mesaj = string.Join("\n", hazirlar.Select(h => $"• {h.MasaNo} — {h.Adet}x {h.UrunAdi}"));
+
+            bool tamam = await DisplayAlert("🔔 Hazır Siparişler", mesaj, "Gördüm ✓", "Kapat");
+
+            if (tamam)
+            {
+                foreach (var b in hazirlar)
+                    _bildirimYonetimi.GorulduIsaretle(b.SiparisDetayId);
+
+                BildirimFrame.IsVisible = false;
+            }
         }
 
         private void MasalariEkranaYukle()
         {
-            // BL'den temiz nesne listesini alıp XAML'daki MasalarListesi'ne bağlıyoruz
             MasalarListesi.ItemsSource = _masaYonetimi.TumMasalariGetir();
         }
 
