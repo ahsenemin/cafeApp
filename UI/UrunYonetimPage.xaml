@@ -1,0 +1,66 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:CafeApp.Models"
+             x:Class="CafeApp.UI.UrunYonetimPage"
+             Title="Ürün Yönetimi"
+             BackgroundColor="#1A1A2E">
+
+    <Grid RowDefinitions="Auto, *" Padding="15">
+
+        <!-- Ekleme/Düzenleme Formu -->
+        <Frame Grid.Row="0" BackgroundColor="#16213E" CornerRadius="12" Padding="15" Margin="0,0,0,10" BorderColor="Transparent">
+            <VerticalStackLayout Spacing="10">
+                <Label x:Name="FormBaslikLabel" Text="Yeni Ürün Ekle" FontSize="18" FontAttributes="Bold" TextColor="White"/>
+
+                <Entry x:Name="UrunAdiEntry" Placeholder="Ürün adı..." 
+                       PlaceholderColor="#533483" TextColor="White" FontSize="16"
+                       BackgroundColor="#0F3460"/>
+
+                <Entry x:Name="UrunFiyatEntry" Placeholder="Fiyat (örn: 75.00)" 
+                       PlaceholderColor="#533483" TextColor="White" FontSize="16"
+                       BackgroundColor="#0F3460" Keyboard="Numeric"/>
+
+                <Label Text="Kategori:" TextColor="#8D8DAA" FontSize="13" Margin="0,0,0,-5"/>
+                <Picker x:Name="KategoriPicker" Title="Kategori seçin..." 
+                        TextColor="White" TitleColor="#533483" FontSize="16"
+                        BackgroundColor="#0F3460"
+                        ItemDisplayBinding="{Binding KAdi}"/>
+
+                <Grid ColumnDefinitions="*, *, Auto" ColumnSpacing="10">
+                    <Button x:Name="KaydetButon" Grid.Column="0" Text="💾 Kaydet" 
+                            BackgroundColor="#27AE60" TextColor="White" CornerRadius="10" 
+                            HeightRequest="44" Clicked="OnKaydetClicked"/>
+                    <Button x:Name="IptalButon" Grid.Column="1" Text="❌ İptal" 
+                            BackgroundColor="#E94560" TextColor="White" CornerRadius="10" 
+                            HeightRequest="44" IsVisible="False" Clicked="OnIptalClicked"/>
+                </Grid>
+            </VerticalStackLayout>
+        </Frame>
+
+        <!-- Ürün Listesi -->
+        <CollectionView x:Name="UrunlerListesi" Grid.Row="1">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:Urun">
+                    <Frame Margin="0,3" BackgroundColor="#16213E" CornerRadius="10" Padding="14" BorderColor="#0F3460">
+                        <Grid ColumnDefinitions="*, Auto, Auto, Auto" ColumnSpacing="8">
+                            <VerticalStackLayout Grid.Column="0" VerticalOptions="Center">
+                                <Label Text="{Binding UrunAdi}" FontSize="16" TextColor="White" FontAttributes="Bold"/>
+                                <Label Text="{Binding UrunFiyati, StringFormat='{0:C2}'}" FontSize="14" TextColor="#E94560" FontAttributes="Bold"/>
+                            </VerticalStackLayout>
+                            <Label Grid.Column="1" Text="{Binding KategoriId, StringFormat='Kat:{0}'}" 
+                                   FontSize="11" TextColor="#8D8DAA" VerticalOptions="Center"/>
+                            <Button Grid.Column="2" Text="✏️" BackgroundColor="#0F3460" TextColor="White" 
+                                    CornerRadius="8" WidthRequest="44" HeightRequest="44" Clicked="OnDuzenleClicked"/>
+                            <Button Grid.Column="3" Text="🗑" BackgroundColor="#E94560" TextColor="White" 
+                                    CornerRadius="8" WidthRequest="44" HeightRequest="44" Clicked="OnSilClicked"/>
+                        </Grid>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+
+            <CollectionView.EmptyView>
+                <Label Text="Henüz ürün yok." TextColor="#8D8DAA" HorizontalTextAlignment="Center" Margin="20" FontSize="16"/>
+            </CollectionView.EmptyView>
+        </CollectionView>
+    </Grid>
+</ContentPage>

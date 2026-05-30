@@ -1,0 +1,66 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:CafeApp.Models"
+             xmlns:ui="clr-namespace:CafeApp.UI"
+             x:Class="CafeApp.UI.SiparisAlmaPage"
+             Title="Sipariş Al"
+             BackgroundColor="#1A1A2E">
+
+    <Grid RowDefinitions="Auto, *, Auto" Padding="10">
+        
+        <!-- Kategori Filtreleri (Dinamik olarak code-behind'dan yüklenecek) -->
+        <ScrollView Grid.Row="0" Orientation="Horizontal" HeightRequest="50" Margin="0,0,0,5">
+            <HorizontalStackLayout x:Name="KategoriListesi" Spacing="8"/>
+        </ScrollView>
+
+        <!-- Ürün Listesi (Veritabanından yüklenecek) -->
+        <CollectionView x:Name="UrunlerListesi" Grid.Row="1">
+            <CollectionView.ItemsLayout>
+                <GridItemsLayout Orientation="Vertical" Span="2" VerticalItemSpacing="10" HorizontalItemSpacing="10" />
+            </CollectionView.ItemsLayout>
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:Urun">
+                    <Frame BackgroundColor="#16213E" CornerRadius="12" Padding="12" BorderColor="#0F3460">
+                        <VerticalStackLayout Spacing="5" HorizontalOptions="Center">
+                            <Label Text="{Binding UrunAdi}" TextColor="White" FontSize="16" FontAttributes="Bold" HorizontalTextAlignment="Center"/>
+                            <Label Text="{Binding UrunFiyati, StringFormat='{0:C2}'}" TextColor="#E94560" FontSize="15" HorizontalTextAlignment="Center" FontAttributes="Bold"/>
+                            <Button Text="Ekle +" BackgroundColor="#0F3460" TextColor="White" CornerRadius="8" HeightRequest="36" FontSize="13" Clicked="OnUrunEkleClicked"/>
+                        </VerticalStackLayout>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <!-- Sepet Paneli -->
+        <Frame Grid.Row="2" BackgroundColor="#16213E" CornerRadius="15" Padding="15" Margin="0,5,0,0" BorderColor="#0F3460">
+            <Grid RowDefinitions="Auto, *, Auto, Auto, Auto">
+                
+                <Label Grid.Row="0" Text="🛒 Sepet" FontSize="18" FontAttributes="Bold" TextColor="White" Margin="0,0,0,5"/>
+
+                <CollectionView x:Name="SepetListesi" Grid.Row="1" HeightRequest="120">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="ui:SepetKalemi">
+                            <Grid ColumnDefinitions="*, Auto, Auto, Auto" Padding="0,4">
+                                <Label Grid.Column="0" Text="{Binding UrunAdi}" TextColor="White" FontSize="14"/>
+                                <Label Grid.Column="1" Text="{Binding Adet, StringFormat='{0}x'}" TextColor="#8D8DAA" FontSize="14" Margin="8,0"/>
+                                <Label Grid.Column="2" Text="{Binding ToplamTutar, StringFormat='{0:C2}'}" TextColor="#E94560" FontSize="14" FontAttributes="Bold"/>
+                                <Button Grid.Column="3" Text="✕" BackgroundColor="Transparent" TextColor="#E94560" FontSize="12" 
+                                        HeightRequest="30" WidthRequest="30" Padding="0" Clicked="OnSepettenCikarClicked"/>
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+                <BoxView Grid.Row="2" HeightRequest="1" Color="#0F3460" Margin="0,5"/>
+                
+                <Grid Grid.Row="3" ColumnDefinitions="*, Auto">
+                    <Label Grid.Column="0" Text="GENEL TOPLAM:" TextColor="White" FontSize="16" FontAttributes="Bold" VerticalOptions="Center"/>
+                    <Label Grid.Column="1" Text="0,00 ₺" x:Name="SepetToplamLabel" TextColor="#E94560" FontSize="20" FontAttributes="Bold" VerticalOptions="Center"/>
+                </Grid>
+
+                <Button Grid.Row="4" Text="✔ Siparişi Onayla" BackgroundColor="#E94560" TextColor="White" FontAttributes="Bold" CornerRadius="10" HeightRequest="48" Margin="0,8,0,0" Clicked="OnSiparisiOnaylaClicked"/>
+            </Grid>
+        </Frame>
+
+    </Grid>
+</ContentPage>

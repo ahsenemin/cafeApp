@@ -1,0 +1,67 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:CafeApp.Models"
+             x:Class="CafeApp.UI.BaristaPage"
+             Title="Mutfak / Barista Ekranı"
+             BackgroundColor="#1A1A2E">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Yenile" Clicked="OnYenileClicked"/>
+        <ToolbarItem Text="Çıkış" Clicked="OnCikisClicked"/>
+    </ContentPage.ToolbarItems>
+
+    <Grid RowDefinitions="Auto, *" Padding="15">
+
+        <!-- Başlık -->
+        <Frame Grid.Row="0" BackgroundColor="#16213E" CornerRadius="12" Padding="15" Margin="0,0,0,10" BorderColor="Transparent">
+            <Grid ColumnDefinitions="*, Auto">
+                <VerticalStackLayout Grid.Column="0">
+                    <Label Text="☕ Hazırlanacak Siparişler" FontSize="22" FontAttributes="Bold" TextColor="White"/>
+                    <Label x:Name="BekleyenSayisiLabel" Text="Bekleyen: 0 ürün" FontSize="14" TextColor="#8D8DAA"/>
+                </VerticalStackLayout>
+                <Label Grid.Column="1" Text="🔴" FontSize="30" VerticalOptions="Center" IsVisible="False" x:Name="YeniSiparisIndicator"/>
+            </Grid>
+        </Frame>
+
+        <!-- Bekleyen Ürünler Listesi -->
+        <CollectionView x:Name="BekleyenUrunlerListesi" Grid.Row="1">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:SiparisDetay">
+                    <Frame Margin="0,4" CornerRadius="12" BackgroundColor="#16213E" Padding="15" BorderColor="#0F3460">
+                        <Grid ColumnDefinitions="Auto, *, Auto" ColumnSpacing="12">
+                            
+                            <!-- Adet Badge -->
+                            <Frame Grid.Column="0" BackgroundColor="#E94560" CornerRadius="20" 
+                                   WidthRequest="40" HeightRequest="40" Padding="0"
+                                   VerticalOptions="Center" BorderColor="Transparent">
+                                <Label Text="{Binding Adet}" FontSize="18" FontAttributes="Bold" 
+                                       TextColor="White" HorizontalOptions="Center" VerticalOptions="Center"/>
+                            </Frame>
+
+                            <!-- Ürün Bilgileri -->
+                            <VerticalStackLayout Grid.Column="1" Spacing="2" VerticalOptions="Center">
+                                <Label Text="{Binding UrunAdi}" FontSize="18" TextColor="White" FontAttributes="Bold"/>
+                                <Label Text="{Binding SiparisNotu}" FontSize="13" TextColor="#E94560" FontAttributes="Italic"/>
+                                <Label Text="{Binding MasaNo, StringFormat='📍 {0}'}" FontSize="13" TextColor="#8D8DAA"/>
+                            </VerticalStackLayout>
+
+                            <!-- Hazırlandı Butonu -->
+                            <Button Grid.Column="2" Text="✔ Hazır" BackgroundColor="#27AE60" TextColor="White" 
+                                    CornerRadius="10" VerticalOptions="Center" FontSize="13"
+                                    Clicked="OnHazirlandiClicked"/>
+                        </Grid>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+
+            <!-- Boş Liste Mesajı -->
+            <CollectionView.EmptyView>
+                <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Spacing="10">
+                    <Label Text="🎉" FontSize="60" HorizontalOptions="Center"/>
+                    <Label Text="Bekleyen sipariş yok!" FontSize="20" TextColor="#8D8DAA" HorizontalOptions="Center"/>
+                    <Label Text="Tüm siparişler hazır." FontSize="14" TextColor="#533483" HorizontalOptions="Center"/>
+                </VerticalStackLayout>
+            </CollectionView.EmptyView>
+        </CollectionView>
+    </Grid>
+</ContentPage>

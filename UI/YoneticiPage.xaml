@@ -1,0 +1,111 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:ui="clr-namespace:CafeApp.UI"
+             x:Class="CafeApp.UI.YoneticiPage"
+             Title="Yönetici Paneli"
+             BackgroundColor="#1A1A2E">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Çıkış" Clicked="OnCikisClicked"/>
+    </ContentPage.ToolbarItems>
+
+    <ScrollView>
+        <VerticalStackLayout Padding="15" Spacing="12">
+
+            <!-- Hoş Geldin -->
+            <Frame BackgroundColor="#16213E" CornerRadius="12" Padding="18" BorderColor="Transparent">
+                <VerticalStackLayout>
+                    <Label Text="📊 Yönetici Paneli" FontSize="24" FontAttributes="Bold" TextColor="White"/>
+                    <Label x:Name="HosgeldinLabel" FontSize="14" TextColor="#8D8DAA"/>
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Hızlı İstatistikler -->
+            <Label Text="Günlük Özet" FontSize="18" FontAttributes="Bold" TextColor="White" Margin="5,5,0,0"/>
+            <Grid ColumnDefinitions="*, *, *" ColumnSpacing="10">
+                <Frame Grid.Column="0" BackgroundColor="#0F3460" CornerRadius="12" Padding="15" BorderColor="Transparent">
+                    <VerticalStackLayout HorizontalOptions="Center">
+                        <Label Text="💰" FontSize="28" HorizontalOptions="Center"/>
+                        <Label x:Name="GunlukCiroLabel" Text="0 ₺" FontSize="18" FontAttributes="Bold" TextColor="#E94560" HorizontalOptions="Center"/>
+                        <Label Text="Günlük Ciro" FontSize="11" TextColor="#8D8DAA" HorizontalOptions="Center"/>
+                    </VerticalStackLayout>
+                </Frame>
+                <Frame Grid.Column="1" BackgroundColor="#0F3460" CornerRadius="12" Padding="15" BorderColor="Transparent">
+                    <VerticalStackLayout HorizontalOptions="Center">
+                        <Label Text="📋" FontSize="28" HorizontalOptions="Center"/>
+                        <Label x:Name="GunlukIslemLabel" Text="0" FontSize="18" FontAttributes="Bold" TextColor="#E94560" HorizontalOptions="Center"/>
+                        <Label Text="İşlem Sayısı" FontSize="11" TextColor="#8D8DAA" HorizontalOptions="Center"/>
+                    </VerticalStackLayout>
+                </Frame>
+                <Frame Grid.Column="2" BackgroundColor="#0F3460" CornerRadius="12" Padding="15" BorderColor="Transparent">
+                    <VerticalStackLayout HorizontalOptions="Center">
+                        <Label Text="🪑" FontSize="28" HorizontalOptions="Center"/>
+                        <Label x:Name="DoluMasaLabel" Text="0" FontSize="18" FontAttributes="Bold" TextColor="#E94560" HorizontalOptions="Center"/>
+                        <Label Text="Dolu Masa" FontSize="11" TextColor="#8D8DAA" HorizontalOptions="Center"/>
+                    </VerticalStackLayout>
+                </Frame>
+            </Grid>
+
+            <!-- Ödeme Yöntemi Dağılımı -->
+            <Label Text="Ödeme Yöntemi Dağılımı" FontSize="18" FontAttributes="Bold" TextColor="White" Margin="5,10,0,0"/>
+            <Frame BackgroundColor="#16213E" CornerRadius="12" Padding="15" BorderColor="Transparent">
+                <VerticalStackLayout Spacing="8">
+                    <Grid ColumnDefinitions="Auto, *, Auto">
+                        <Label Grid.Column="0" Text="💵" FontSize="20"/>
+                        <Label Grid.Column="1" Text="Nakit" TextColor="White" FontSize="15" VerticalOptions="Center" Margin="8,0"/>
+                        <Label Grid.Column="2" x:Name="NakitToplamLabel" Text="0 ₺" TextColor="#E94560" FontSize="15" FontAttributes="Bold"/>
+                    </Grid>
+                    <BoxView HeightRequest="1" Color="#0F3460"/>
+                    <Grid ColumnDefinitions="Auto, *, Auto">
+                        <Label Grid.Column="0" Text="💳" FontSize="20"/>
+                        <Label Grid.Column="1" Text="Kredi Kartı" TextColor="White" FontSize="15" VerticalOptions="Center" Margin="8,0"/>
+                        <Label Grid.Column="2" x:Name="KartToplamLabel" Text="0 ₺" TextColor="#E94560" FontSize="15" FontAttributes="Bold"/>
+                    </Grid>
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Personel Performansı -->
+            <Label Text="Personel Satış Performansı" FontSize="18" FontAttributes="Bold" TextColor="White" Margin="5,10,0,0"/>
+            <CollectionView x:Name="PersonelRaporListesi">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="ui:PersonelPerformans">
+                        <Frame Margin="0,3" BackgroundColor="#16213E" CornerRadius="10" Padding="14" BorderColor="#0F3460">
+                            <Grid ColumnDefinitions="Auto, *, Auto" ColumnSpacing="12">
+                                <Frame Grid.Column="0" BackgroundColor="#0F3460" CornerRadius="20" 
+                                       WidthRequest="40" HeightRequest="40" Padding="0" BorderColor="Transparent">
+                                    <Label Text="👤" FontSize="20" HorizontalOptions="Center" VerticalOptions="Center"/>
+                                </Frame>
+                                <VerticalStackLayout Grid.Column="1" VerticalOptions="Center">
+                                    <Label Text="{Binding TamAd}" FontSize="15" TextColor="White" FontAttributes="Bold"/>
+                                    <Label Text="{Binding DurumMetni}" FontSize="12" TextColor="#8D8DAA"/>
+                                </VerticalStackLayout>
+                                <Label Grid.Column="2" Text="{Binding ToplamSatis, StringFormat='{0:C2}'}" 
+                                       TextColor="#E94560" FontSize="16" FontAttributes="Bold" VerticalOptions="Center"/>
+                            </Grid>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <!-- Yönetim İşlemleri -->
+            <Label Text="Yönetim İşlemleri" FontSize="18" FontAttributes="Bold" TextColor="White" Margin="5,10,0,0"/>
+            <Grid ColumnDefinitions="*, *" ColumnSpacing="10" RowSpacing="10">
+                <Button Grid.Column="0" Text="📂 Kategori Yönetimi" BackgroundColor="#533483" TextColor="White" CornerRadius="12" HeightRequest="50" Clicked="OnKategoriYonetimClicked"/>
+                <Button Grid.Column="1" Text="☕ Ürün Yönetimi" BackgroundColor="#533483" TextColor="White" CornerRadius="12" HeightRequest="50" Clicked="OnUrunYonetimClicked"/>
+            </Grid>
+
+            <!-- Hızlı Erişim Butonları -->
+            <Label Text="Hızlı İşlemler" FontSize="18" FontAttributes="Bold" TextColor="White" Margin="5,10,0,0"/>
+            <Grid ColumnDefinitions="*, *" ColumnSpacing="10" RowDefinitions="Auto, Auto" RowSpacing="10">
+                <Button Grid.Column="0" Grid.Row="0" Text="🪑 Masaları Gör" BackgroundColor="#0F3460" TextColor="White" CornerRadius="12" HeightRequest="50" Clicked="OnMasalariGorClicked"/>
+                <Button Grid.Column="1" Grid.Row="0" Text="☕ Mutfağı Gör" BackgroundColor="#0F3460" TextColor="White" CornerRadius="12" HeightRequest="50" Clicked="OnMutfagiGorClicked"/>
+                <Button Grid.Column="0" Grid.Row="1" Text="🔄 Verileri Yenile" BackgroundColor="#0F3460" TextColor="White" CornerRadius="12" HeightRequest="50" Clicked="OnVerileriYenileClicked"/>
+                <Button Grid.Column="1" Grid.Row="1" Text="📋 Tüm Siparişler" BackgroundColor="#0F3460" TextColor="White" CornerRadius="12" HeightRequest="50" Clicked="OnTumSiparisleriGorClicked"/>
+            </Grid>
+
+            <!-- Alt Boşluk -->
+            <BoxView HeightRequest="20"/>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

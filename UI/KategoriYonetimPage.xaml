@@ -1,0 +1,54 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:CafeApp.Models"
+             x:Class="CafeApp.UI.KategoriYonetimPage"
+             Title="Kategori Yönetimi"
+             BackgroundColor="#1A1A2E">
+
+    <Grid RowDefinitions="Auto, *" Padding="15">
+
+        <!-- Ekleme/Düzenleme Formu -->
+        <Frame Grid.Row="0" BackgroundColor="#16213E" CornerRadius="12" Padding="15" Margin="0,0,0,10" BorderColor="Transparent">
+            <VerticalStackLayout Spacing="10">
+                <Label x:Name="FormBaslikLabel" Text="Yeni Kategori Ekle" FontSize="18" FontAttributes="Bold" TextColor="White"/>
+                
+                <Entry x:Name="KategoriAdiEntry" Placeholder="Kategori adı..." 
+                       PlaceholderColor="#533483" TextColor="White" FontSize="16"
+                       BackgroundColor="#0F3460"/>
+
+                <Grid ColumnDefinitions="*, *, Auto" ColumnSpacing="10">
+                    <Button x:Name="KaydetButon" Grid.Column="0" Text="💾 Kaydet" 
+                            BackgroundColor="#27AE60" TextColor="White" CornerRadius="10" 
+                            HeightRequest="44" Clicked="OnKaydetClicked"/>
+                    <Button x:Name="IptalButon" Grid.Column="1" Text="❌ İptal" 
+                            BackgroundColor="#E94560" TextColor="White" CornerRadius="10" 
+                            HeightRequest="44" IsVisible="False" Clicked="OnIptalClicked"/>
+                </Grid>
+            </VerticalStackLayout>
+        </Frame>
+
+        <!-- Kategori Listesi -->
+        <CollectionView x:Name="KategoriListesi" Grid.Row="1">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:Kategori">
+                    <Frame Margin="0,3" BackgroundColor="#16213E" CornerRadius="10" Padding="14" BorderColor="#0F3460">
+                        <Grid ColumnDefinitions="*, Auto, Auto" ColumnSpacing="8">
+                            <VerticalStackLayout Grid.Column="0" VerticalOptions="Center">
+                                <Label Text="{Binding KAdi}" FontSize="16" TextColor="White" FontAttributes="Bold"/>
+                                <Label Text="{Binding KategoriId, StringFormat='ID: {0}'}" FontSize="12" TextColor="#8D8DAA"/>
+                            </VerticalStackLayout>
+                            <Button Grid.Column="1" Text="✏️" BackgroundColor="#0F3460" TextColor="White" 
+                                    CornerRadius="8" WidthRequest="44" HeightRequest="44" Clicked="OnDuzenleClicked"/>
+                            <Button Grid.Column="2" Text="🗑" BackgroundColor="#E94560" TextColor="White" 
+                                    CornerRadius="8" WidthRequest="44" HeightRequest="44" Clicked="OnSilClicked"/>
+                        </Grid>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+
+            <CollectionView.EmptyView>
+                <Label Text="Henüz kategori yok." TextColor="#8D8DAA" HorizontalTextAlignment="Center" Margin="20" FontSize="16"/>
+            </CollectionView.EmptyView>
+        </CollectionView>
+    </Grid>
+</ContentPage>

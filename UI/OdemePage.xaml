@@ -1,0 +1,86 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:CafeApp.Models"
+             x:Class="CafeApp.UI.OdemePage"
+             Title="Ödeme"
+             BackgroundColor="#1A1A2E">
+
+    <Grid RowDefinitions="Auto, *, Auto" Padding="15">
+
+        <!-- Başlık Bandı -->
+        <Frame Grid.Row="0" BackgroundColor="#16213E" CornerRadius="12" Padding="15" Margin="0,0,0,10" BorderColor="Transparent">
+            <VerticalStackLayout>
+                <Label x:Name="MasaBaslikLabel" Text="Masa" FontSize="22" FontAttributes="Bold" TextColor="White"/>
+                <Label x:Name="DoluSuresiLabel" Text="" FontSize="13" TextColor="#8D8DAA"/>
+            </VerticalStackLayout>
+        </Frame>
+
+        <!-- Sipariş Detayları Listesi -->
+        <CollectionView x:Name="SiparisDetayListesi" Grid.Row="1">
+            <CollectionView.Header>
+                <Grid ColumnDefinitions="*, Auto, Auto" Padding="5,8">
+                    <Label Grid.Column="0" Text="Ürün" TextColor="#8D8DAA" FontSize="13" FontAttributes="Bold"/>
+                    <Label Grid.Column="1" Text="Adet" TextColor="#8D8DAA" FontSize="13" FontAttributes="Bold" Margin="10,0"/>
+                    <Label Grid.Column="2" Text="Tutar" TextColor="#8D8DAA" FontSize="13" FontAttributes="Bold"/>
+                </Grid>
+            </CollectionView.Header>
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:SiparisDetay">
+                    <Frame Margin="0,3" BackgroundColor="#16213E" CornerRadius="10" Padding="12" BorderColor="#0F3460">
+                        <Grid ColumnDefinitions="*, Auto, Auto">
+                            <Label Grid.Column="0" Text="{Binding UrunAdi}" TextColor="White" FontSize="15"/>
+                            <Label Grid.Column="1" Text="{Binding Adet, StringFormat='{0}x'}" TextColor="#8D8DAA" FontSize="15" Margin="10,0"/>
+                            <Label Grid.Column="2" Text="{Binding ToplamTutar, StringFormat='{0:C2}'}" TextColor="#E94560" FontSize="15" FontAttributes="Bold"/>
+                        </Grid>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <!-- Ödeme Paneli -->
+        <Frame Grid.Row="2" BackgroundColor="#16213E" CornerRadius="15" Padding="18" BorderColor="#0F3460">
+            <VerticalStackLayout Spacing="10">
+
+                <!-- Ara Toplam -->
+                <Grid ColumnDefinitions="*, Auto">
+                    <Label Grid.Column="0" Text="Ara Toplam:" TextColor="#8D8DAA" FontSize="15"/>
+                    <Label Grid.Column="1" x:Name="AraToplamLabel" Text="0,00 ₺" TextColor="White" FontSize="15"/>
+                </Grid>
+
+                <!-- KDV -->
+                <Grid ColumnDefinitions="*, Auto">
+                    <Label Grid.Column="0" Text="KDV (%20):" TextColor="#8D8DAA" FontSize="15"/>
+                    <Label Grid.Column="1" x:Name="KDVLabel" Text="0,00 ₺" TextColor="White" FontSize="15"/>
+                </Grid>
+
+                <BoxView HeightRequest="1" Color="#0F3460"/>
+
+                <!-- Genel Toplam -->
+                <Grid ColumnDefinitions="*, Auto">
+                    <Label Grid.Column="0" Text="GENEL TOPLAM:" TextColor="White" FontSize="20" FontAttributes="Bold"/>
+                    <Label Grid.Column="1" x:Name="GenelToplamLabel" Text="0,00 ₺" TextColor="#E94560" FontSize="22" FontAttributes="Bold"/>
+                </Grid>
+
+                <!-- Ödeme Yöntemi -->
+                <Label Text="Ödeme Yöntemi" TextColor="#8D8DAA" FontSize="13" Margin="0,5,0,0"/>
+                <Grid ColumnDefinitions="*, *" ColumnSpacing="10">
+                    <Button x:Name="NakitButon" Grid.Column="0" Text="💵 Nakit" 
+                            BackgroundColor="#0F3460" TextColor="White" CornerRadius="10" HeightRequest="48"
+                            Clicked="OnNakitSecildi"/>
+                    <Button x:Name="KartButon" Grid.Column="1" Text="💳 Kredi Kartı" 
+                            BackgroundColor="#0F3460" TextColor="White" CornerRadius="10" HeightRequest="48"
+                            Clicked="OnKartSecildi"/>
+                </Grid>
+
+                <!-- Ödemeyi Tamamla -->
+                <Button x:Name="OdemeyiTamamlaButon" Text="✔ Ödemeyi Tamamla" 
+                        BackgroundColor="#27AE60" TextColor="White" FontAttributes="Bold" 
+                        CornerRadius="12" HeightRequest="52" FontSize="17"
+                        Clicked="OnOdemeyiTamamlaClicked"
+                        IsEnabled="False"/>
+
+            </VerticalStackLayout>
+        </Frame>
+
+    </Grid>
+</ContentPage>
