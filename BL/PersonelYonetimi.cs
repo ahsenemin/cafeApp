@@ -69,6 +69,41 @@ namespace CafeApp.BL
         }
 
         // ==============================================================================
+        // PERSONEL EKLEME
+        // ==============================================================================
+        public string PersonelEkle(string adi, string soyadi, string eposta, string adres, string tel, string tc, byte aktifMi, int rolId)
+        {
+            if (string.IsNullOrWhiteSpace(adi) || string.IsNullOrWhiteSpace(soyadi))
+                return "Hata: Ad ve soyad boş bırakılamaz!";
+            if (string.IsNullOrWhiteSpace(tc) || tc.Length != 11)
+                return "Hata: TC Kimlik No 11 haneli olmalıdır!";
+
+            bool sonuc = _dal.PersonelEkle(adi, soyadi, eposta, adres, tel, tc, aktifMi, rolId);
+            return sonuc ? "Başarılı: Personel eklendi." : "Hata: Personel eklenemedi. TC veya e-posta zaten kayıtlı olabilir.";
+        }
+
+        // ==============================================================================
+        // PERSONEL GÜNCELLEME
+        // ==============================================================================
+        public string PersonelGuncelle(int personelId, string adi, string soyadi, string eposta, string adres, string tel, string tc, byte aktifMi, int rolId)
+        {
+            if (string.IsNullOrWhiteSpace(adi) || string.IsNullOrWhiteSpace(soyadi))
+                return "Hata: Ad ve soyad boş bırakılamaz!";
+
+            bool sonuc = _dal.PersonelGuncelle(personelId, adi, soyadi, eposta, adres, tel, tc, aktifMi, rolId);
+            return sonuc ? "Başarılı: Personel güncellendi." : "Hata: Personel güncellenemedi.";
+        }
+
+        // ==============================================================================
+        // PERSONEL SİLME
+        // ==============================================================================
+        public string PersonelSil(int personelId)
+        {
+            bool sonuc = _dal.PersonelSil(personelId);
+            return sonuc ? "Başarılı: Personel silindi." : "Hata: Personel silinemedi.";
+        }
+
+        // ==============================================================================
         // PERSONEL TOPLAM SATIŞ (fn_PersonelToplamSatis wrapper)
         // ==============================================================================
         public decimal PersonelCiroGetir(int personelId)

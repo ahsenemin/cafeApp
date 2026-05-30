@@ -166,6 +166,11 @@ namespace CafeApp.UI
             await Navigation.PushAsync(new UrunYonetimPage());
         }
 
+        private async void OnPersonelYonetimClicked(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new PersonelYonetimPage());
+        }
+
         // ==============================================================================
         // ÇIKIŞ YAP
         // ==============================================================================

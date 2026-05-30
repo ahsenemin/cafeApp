@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:CafeApp.Models"
+             x:Class="CafeApp.UI.PersonelYonetimPage"
+             Title="Personel Yönetimi"
+             BackgroundColor="#1A1A2E">
+
+    <Grid RowDefinitions="Auto, *" Padding="15">
+
+        <!-- Form -->
+        <Frame Grid.Row="0" BackgroundColor="#16213E" CornerRadius="12" Padding="15" Margin="0,0,0,10" BorderColor="Transparent">
+            <VerticalStackLayout Spacing="8">
+                <Label x:Name="FormBaslikLabel" Text="Yeni Personel Ekle" FontSize="18" FontAttributes="Bold" TextColor="White"/>
+
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
+                    <Entry x:Name="AdiEntry" Grid.Column="0" Placeholder="Ad *" PlaceholderColor="#533483"
+                           TextColor="White" BackgroundColor="#0F3460" FontSize="15"/>
+                    <Entry x:Name="SoyadiEntry" Grid.Column="1" Placeholder="Soyad *" PlaceholderColor="#533483"
+                           TextColor="White" BackgroundColor="#0F3460" FontSize="15"/>
+                </Grid>
+
+                <Entry x:Name="EpostaEntry" Placeholder="E-posta *" PlaceholderColor="#533483"
+                       TextColor="White" BackgroundColor="#0F3460" FontSize="15" Keyboard="Email"/>
+
+                <Entry x:Name="TelEntry" Placeholder="Telefon" PlaceholderColor="#533483"
+                       TextColor="White" BackgroundColor="#0F3460" FontSize="15" Keyboard="Telephone"/>
+
+                <Entry x:Name="TcEntry" Placeholder="TC Kimlik No (11 hane) *" PlaceholderColor="#533483"
+                       TextColor="White" BackgroundColor="#0F3460" FontSize="15" Keyboard="Numeric" MaxLength="11"/>
+
+                <Entry x:Name="AdresEntry" Placeholder="Adres" PlaceholderColor="#533483"
+                       TextColor="White" BackgroundColor="#0F3460" FontSize="15"/>
+
+                <Label Text="Rol:" TextColor="#8D8DAA" FontSize="13" Margin="0,0,0,-5"/>
+                <Button x:Name="RolSecButon" Text="Rol seçin..."
+                        BackgroundColor="#0F3460" TextColor="#533483" FontSize="15"
+                        HorizontalOptions="Fill" HeightRequest="44"
+                        Clicked="OnRolSecClicked"/>
+
+                <Grid ColumnDefinitions="*, *" ColumnSpacing="10">
+                    <Button x:Name="KaydetButon" Grid.Column="0" Text="💾 Kaydet"
+                            BackgroundColor="#27AE60" TextColor="White" CornerRadius="10"
+                            HeightRequest="44" Clicked="OnKaydetClicked"/>
+                    <Button x:Name="IptalButon" Grid.Column="1" Text="❌ İptal"
+                            BackgroundColor="#E94560" TextColor="White" CornerRadius="10"
+                            HeightRequest="44" IsVisible="False" Clicked="OnIptalClicked"/>
+                </Grid>
+            </VerticalStackLayout>
+        </Frame>
+
+        <!-- Liste -->
+        <CollectionView x:Name="PersonelListesi" Grid.Row="1">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:Personel">
+                    <Frame Margin="0,3" BackgroundColor="#16213E" CornerRadius="10" Padding="14" BorderColor="#0F3460">
+                        <Grid ColumnDefinitions="*, Auto, Auto, Auto" ColumnSpacing="8">
+                            <VerticalStackLayout Grid.Column="0" VerticalOptions="Center">
+                                <Label Text="{Binding TamAd}" FontSize="16" TextColor="White" FontAttributes="Bold"/>
+                                <Label Text="{Binding RolMetni}" FontSize="13" TextColor="#8D8DAA"/>
+                                <Label Text="{Binding DurumMetni}" FontSize="12" TextColor="#27AE60"/>
+                            </VerticalStackLayout>
+                            <Label Grid.Column="1" Text="{Binding Eposta}" FontSize="11" TextColor="#8D8DAA" VerticalOptions="Center"/>
+                            <Button Grid.Column="2" Text="✏️" BackgroundColor="#0F3460" TextColor="White"
+                                    CornerRadius="8" WidthRequest="44" HeightRequest="44" Clicked="OnDuzenleClicked"/>
+                            <Button Grid.Column="3" Text="🗑" BackgroundColor="#E94560" TextColor="White"
+                                    CornerRadius="8" WidthRequest="44" HeightRequest="44" Clicked="OnSilClicked"/>
+                        </Grid>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+            <CollectionView.EmptyView>
+                <Label Text="Henüz personel yok." TextColor="#8D8DAA" HorizontalTextAlignment="Center" Margin="20" FontSize="16"/>
+            </CollectionView.EmptyView>
+        </CollectionView>
+
+    </Grid>
+</ContentPage>

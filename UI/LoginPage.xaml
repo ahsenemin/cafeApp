@@ -4,6 +4,7 @@
              x:Class="CafeApp.UI.LoginPage"
              BackgroundColor="#1A1A2E">
 
+    <Grid>
     <ScrollView>
         <VerticalStackLayout Spacing="15" Padding="30" VerticalOptions="Center" MaximumWidthRequest="500" HorizontalOptions="Center">
             
@@ -66,4 +67,35 @@
             
         </VerticalStackLayout>
     </ScrollView>
+
+    <!-- Şifre Overlay -->
+    <Grid x:Name="SifreOverlay" IsVisible="False"
+          BackgroundColor="#AA000000"
+          HorizontalOptions="Fill" VerticalOptions="Fill">
+        <Frame BackgroundColor="#16213E" CornerRadius="16" Padding="25"
+               HorizontalOptions="Center" VerticalOptions="Center"
+               WidthRequest="300" BorderColor="#E94560">
+            <VerticalStackLayout Spacing="15">
+                <Label Text="🔐 Yönetici Girişi" FontSize="20" FontAttributes="Bold"
+                       TextColor="White" HorizontalTextAlignment="Center"/>
+                <Label Text="Şifrenizi girin:" TextColor="#8D8DAA" FontSize="14"/>
+                <Entry x:Name="SifreEntry" IsPassword="True"
+                       Placeholder="••••••" PlaceholderColor="#533483"
+                       TextColor="White" BackgroundColor="#0F3460"
+                       FontSize="18" HeightRequest="48"/>
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                    <Button Grid.Column="0" Text="İptal"
+                            BackgroundColor="#0F3460" TextColor="White"
+                            CornerRadius="10" HeightRequest="44"
+                            Clicked="OnSifreIptalClicked"/>
+                    <Button Grid.Column="1" Text="Giriş"
+                            BackgroundColor="#E94560" TextColor="White"
+                            CornerRadius="10" HeightRequest="44"
+                            Clicked="OnSifreOnayClicked"/>
+                </Grid>
+            </VerticalStackLayout>
+        </Frame>
+    </Grid>
+
+    </Grid>
 </ContentPage>

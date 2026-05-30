@@ -64,14 +64,42 @@ namespace CafeApp.UI
                     Application.Current!.MainPage = new NavigationPage(new BaristaPage());
                     break;
 
-                case 101: // Yönetici
-                    Application.Current!.MainPage = new NavigationPage(new YoneticiPage());
+                case 101: // Yönetici — şifre overlay aç
+                    SifreEntry.Text = "";
+                    SifreOverlay.IsVisible = true;
+                    SifreEntry.Focus();
                     break;
 
                 default:
                     // Tanımlanmamış rol varsa garson ekranına yönlendir
                     Application.Current!.MainPage = new NavigationPage(new GarsonPage());
                     break;
+            }
+        }
+        // ==============================================================================
+        // ŞİFRE OVERLAY — İPTAL
+        // ==============================================================================
+        private void OnSifreIptalClicked(object sender, EventArgs e)
+        {
+            SifreOverlay.IsVisible = false;
+            SifreEntry.Text = "";
+        }
+
+        // ==============================================================================
+        // ŞİFRE OVERLAY — ONAY
+        // ==============================================================================
+        private async void OnSifreOnayClicked(object sender, EventArgs e)
+        {
+            if (SifreEntry.Text == "1234")
+            {
+                SifreOverlay.IsVisible = false;
+                Application.Current!.MainPage = new NavigationPage(new YoneticiPage());
+            }
+            else
+            {
+                SifreEntry.Text = "";
+                await DisplayAlert("❌ Hata", "Yanlış şifre!", "Tamam");
+                SifreEntry.Focus();
             }
         }
     }

@@ -89,9 +89,10 @@
 
             <!-- Yönetim İşlemleri -->
             <Label Text="Yönetim İşlemleri" FontSize="18" FontAttributes="Bold" TextColor="White" Margin="5,10,0,0"/>
-            <Grid ColumnDefinitions="*, *" ColumnSpacing="10" RowSpacing="10">
-                <Button Grid.Column="0" Text="📂 Kategori Yönetimi" BackgroundColor="#533483" TextColor="White" CornerRadius="12" HeightRequest="50" Clicked="OnKategoriYonetimClicked"/>
-                <Button Grid.Column="1" Text="☕ Ürün Yönetimi" BackgroundColor="#533483" TextColor="White" CornerRadius="12" HeightRequest="50" Clicked="OnUrunYonetimClicked"/>
+            <Grid ColumnDefinitions="*, *" ColumnSpacing="10" RowDefinitions="Auto,Auto" RowSpacing="10">
+                <Button Grid.Column="0" Grid.Row="0" Text="📂 Kategori Yönetimi" BackgroundColor="#533483" TextColor="White" CornerRadius="12" HeightRequest="50" Clicked="OnKategoriYonetimClicked"/>
+                <Button Grid.Column="1" Grid.Row="0" Text="☕ Ürün Yönetimi" BackgroundColor="#533483" TextColor="White" CornerRadius="12" HeightRequest="50" Clicked="OnUrunYonetimClicked"/>
+                <Button Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Text="👥 Personel Yönetimi" BackgroundColor="#533483" TextColor="White" CornerRadius="12" HeightRequest="50" Clicked="OnPersonelYonetimClicked"/>
             </Grid>
 
             <!-- Hızlı Erişim Butonları -->
